@@ -15,6 +15,20 @@ class BigInt {
     // Returns: 1 if |this| > |other|, 0 if equal, -1 if |this| < |other|
     int compareMagnitude(const BigInt& other) const {
         // TODO: Implement this function
+        if (this->number.length() > other.number.length()) {
+            return 1;
+        }
+        else if(this->number.length() < other.number.length())
+            return -1;
+
+        for (int i = 0; i < this->number.length(); i++) {
+            if (this->number[i] > other.number[i]) {
+                return 1;
+            }
+            else if (this->number[i] < other.number[i]) {
+                return -1;
+            }
+        }
         return 0;
     }
 
@@ -139,7 +153,13 @@ public:
     }
 
     // Friend declarations for comparison operators
-    friend bool operator==(const BigInt& lhs, const BigInt& rhs);
+    friend bool operator==(const BigInt& lhs, const BigInt& rhs) {
+        if (lhs.number == rhs.number && lhs.number == "0")
+            return true;
+        if (lhs.isNegative != rhs.isNegative)
+            return false;
+        return lhs.number == rhs.number;
+    }
     friend bool operator<(const BigInt& lhs, const BigInt& rhs);
 };
 
