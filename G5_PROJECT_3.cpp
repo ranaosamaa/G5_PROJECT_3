@@ -32,10 +32,37 @@ class BigInt {
         return 0;
     }
 
+    string subtractStrings(string s1, string s2) {
+        string result = "";
+        int borrow = 0;
+
+        reverse(s1.begin(), s1.end());
+        reverse(s2.begin(), s2.end());
+
+        for (int i = 0; i < s1.size(); i++) {
+            int digit1 = s1[i] - '0';
+            int digit2 = i < s2.size() ? s2[i] - '0':0;
+
+            digit1 -= borrow;
+            if (digit1 < digit2) {
+                digit1 += 10;
+                borrow = 1;
+            }
+            else borrow = 0;
+
+            result += (digit1 - digit2) + '0';
+        }
+        reverse(result.begin(), result.end());
+        int i = 0;
+        while (i < result.size() - 1 && result[i] == '0') i++;
+        return result.substr(i);
+    }
 public:
     // Default constructor - initialize to zero
     BigInt() {
         // TODO: Implement this constructor
+        number = "0";
+        isNegative = false;
     }
 
     // Constructor from 64-bit integer
