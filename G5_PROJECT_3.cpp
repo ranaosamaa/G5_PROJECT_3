@@ -76,9 +76,10 @@ public:
     }
 
     // Copy constructor
-    BigInt(const BigInt& other) {
-        // TODO: Implement this constructor
-    }
+   BigInt(const BigInt& other) {
+    this->number = other.number;
+    this->isNegative = other.isNegative;
+}
 
     // Destructor
     ~BigInt() {
@@ -87,7 +88,10 @@ public:
 
     // Assignment operator
     BigInt& operator=(const BigInt& other) {
-        // TODO: Implement this operator
+        if (this != &other) {
+        this->number = other.number;
+        this->isNegative = other.isNegative;
+    }
         return *this;
     }
 
@@ -239,7 +243,19 @@ bool operator!=(const BigInt& lhs, const BigInt& rhs) {
 
 // Less-than comparison operator (x < y)
 bool operator<(const BigInt& lhs, const BigInt& rhs) {
-    // TODO: Implement this operator
+    if (lhs.isNegative != rhs.isNegative)
+        return lhs.isNegative;
+
+    // same sign
+    int cmp = lhs.compareMagnitude(rhs);
+
+    if (!lhs.isNegative) {
+        // both positive
+        return cmp == -1;
+    } else {
+        // both negative (reverse)
+        return cmp == 1;
+    }
     return false;
 }
 
