@@ -106,6 +106,9 @@ public:
 
     // Constructor from 64-bit integer
     BigInt(int64_t value) {
+        if (value < 0)
+            isNegative = true;
+        number = abs(value);
         // TODO: Implement this constructor
     }
 
@@ -115,12 +118,12 @@ public:
         // chec if the string is starting with - 
         if(str[0] == '-'){
             isNegative = true;
+            number = str.substr(1);
         }
         else {
             isNegative = false;
+            number = str;
         }
-        // store the input in our private member
-        number = str;
         // call leading zer0 functoin
         removeLeadingZeros();
     }
@@ -148,14 +151,16 @@ public:
     // Unary negation operator (-x)
     BigInt operator-() const {
         BigInt result;
-        // TODO: Implement negation logic
+        result.number = this->number;
+        result.isNegative = !(this->isNegative);
         return result;
     }
 
     // Unary plus operator (+x)
     BigInt operator+() const {
         BigInt result;
-        // TODO: Implement this operator
+        result.number = this->number;
+        result.isNegative = this->isNegative;
         return result;
     }
 
@@ -223,13 +228,15 @@ public:
 
     // Output stream operator (for printing)
     friend ostream& operator<<(ostream& os, const BigInt& num) {
-        // TODO: Implement this operator
+        os << num.toString();
         return os;
     }
 
     // Input stream operator (for reading from input)
     friend istream& operator>>(istream& is, BigInt& num) {
-        // TODO: Implement this operator
+        string s;
+        is >> s;
+        num = BigInt(s);
         return is;
     }
 
