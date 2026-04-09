@@ -57,6 +57,45 @@ class BigInt {
         while (i < result.size() - 1 && result[i] == '0') i++;
         return result.substr(i);
     }
+    // a helper function to add two strings 
+    string addstrings(string s1 , string s2){
+        // identfiy a result string
+        string result = "";
+        int Carry = 0;
+        reverse(s1.begin(), s1.end());
+        reverse(s2.begin(), s2.end());  
+        // looping through the strings
+        int i =0;
+        int j =0;
+        int sum =0;
+        int dig1 = 0;
+        int dig2 =0;
+        while(i<s1.size() || j<s2.size() || Carry!=0 ){
+            if (i < s1.size()){
+                dig1 = s1[i] -'0';   
+            }
+            else {
+                dig1=0;
+            }
+            if (j < s2.size()){
+
+                dig2 = s2[j] -'0';
+            }
+            else {
+                dig2=0;
+            }
+            sum = (dig1+dig2)+Carry; 
+            int Rdig = sum %10;
+            result +=(Rdig +'0');
+
+            Carry = (sum /10);
+
+            i++;
+            j++;
+        }     
+        reverse(result.begin(), result.end());
+        return result;
+    }
 public:
     // Default constructor - initialize to zero
     BigInt() {
@@ -73,6 +112,17 @@ public:
     // Constructor from string representation
     BigInt(const string& str) {
         // TODO: Implement this constructor
+        // chec if the string is starting with - 
+        if(str[0] == '-'){
+            isNegative = true;
+        }
+        else {
+            isNegative = false;
+        }
+        // store the input in our private member
+        number = str;
+        // call leading zer0 functoin
+        removeLeadingZeros();
     }
 
     // Copy constructor
