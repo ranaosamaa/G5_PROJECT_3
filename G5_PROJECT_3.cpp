@@ -9,6 +9,11 @@ class BigInt {
     // Remove unnecessary leading zeros from the number string
     void removeLeadingZeros() {
         // TODO: Implement this function
+        int i=0;
+        while (i< (int)number.size()-1 && number[i]=='0') i++;
+        number=number.substr(i);
+        // If no becomes "0", make sure sign is not -ve
+        if (number == "0") isNegative = false;
     }
 
     // Compare absolute values of two BigInts (ignore signs)
@@ -241,7 +246,8 @@ public:
     // Convert BigInt to string representation
     string toString() const {
         // TODO: Implement this function
-        return "";
+        if (number == "0") return "0"; // zero has no sign
+        return (isNegative ? "-" : "") + number;
     }
 
     // Output stream operator (for printing)
