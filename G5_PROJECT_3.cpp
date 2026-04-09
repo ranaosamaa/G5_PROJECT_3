@@ -178,7 +178,25 @@ public:
 
     // Multiplication assignment operator (x *= y)
     BigInt& operator*=(const BigInt& other) {
-        // TODO: Implement this operator
+        string result = "0";
+        for (int i = number.size() - 1; i >= 0; i--) {
+            int carry = 0;
+            string temp = "";
+
+            for (int k = 0; k < number.size() - 1; k++)
+                temp += '0';
+
+            for (int j = other.number.size() - 1; j >= 0; j--) {
+                int mul = (number[i] - '0') * (other.number[j] - '0') + carry;
+                temp = char(mul % 10 + '0') + temp;
+                carry = mul / 10;
+            }
+            if (carry) temp = char(carry + '0') + temp;
+            result = addstrings(result, temp);
+        }
+        number = result;
+        isNegative = (isNegative != other.isNegative);
+        removeLeadingZeros();
         return *this;
     }
 
