@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 class BigInt {
@@ -208,6 +209,37 @@ public:
     // Division assignment operator (x /= y)
     BigInt& operator/=(const BigInt& other) {
         // TODO: Implement this operator
+        // Div by 0
+        if (other.number=="0") throw runtime_error("Division by zero");
+        // If this is 0
+        if (number=="0") return *this;
+
+        BigInt divisor=other;
+        divisor.isNegative=false;
+
+        BigInt current("0");
+        string result="";
+
+        for (char digit:number) {
+            // current=current*10 + digit
+            current.number+=digit;
+            current.removeLeadingZeros();
+            int count=0;
+            while (current.compareMagnitude(divisor)>=0) {
+                current -= divisor;
+                count++;
+            }
+            result += (count+'0');
+        }
+        number=result;
+        removeLeadingZeros();
+        // Sign handle
+        isNegative= (isNegative!=other.isNegative);
+        // If res is 0 -> no -ve
+        if (number=="0") {
+            isNegative=false;
+        }
+
         return *this;
     }
 
@@ -293,6 +325,8 @@ BigInt operator-(BigInt lhs, const BigInt& rhs) {
 BigInt operator*(BigInt lhs, const BigInt& rhs) {
     BigInt result;
     // TODO: Implement this operator
+    result=lhs;   // copy lft oper
+    result*=rhs;         // use mult assig
     return result;
 }
 
