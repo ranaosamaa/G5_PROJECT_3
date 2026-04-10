@@ -264,7 +264,33 @@ public:
 
     // Modulus assignment operator (x %= y)
     BigInt& operator%=(const BigInt& other) {
-        // TODO: Implement this operator
+        if (other.number == "0")
+        throw runtime_error("Division by zero");
+
+    if (number == "0")
+        return *this;
+
+    bool originalSign = isNegative;
+
+    BigInt divisor = other;
+    divisor.isNegative = false;
+
+    BigInt remainder("0");
+    remainder.isNegative = false;
+
+    for (char digit : number) {
+        remainder.number += digit;
+        remainder.removeLeadingZeros();
+
+        while (remainder.compareMagnitude(divisor) >= 0) {
+            remainder.number = subtractStrings(remainder.number, divisor.number);
+            remainder.removeLeadingZeros();
+        }
+    }
+
+    number = remainder.number;
+    isNegative = (number == "0") ? false : originalSign;
+
         return *this;
     }
 
