@@ -278,7 +278,7 @@ public:
     // Post-increment operator (x++)
     BigInt operator++(int) {
         BigInt temp;
-        // TODO: Implement this operator
+        *this += BigInt(1);
         return temp;
     }
 
@@ -291,7 +291,7 @@ public:
     // Post-decrement operator (x--)
     BigInt operator--(int) {
         BigInt temp;
-        // TODO: Implement this operator
+        *this -= BigInt(1);
         return temp;
     }
 
@@ -331,7 +331,8 @@ BigInt operator+(BigInt lhs, const BigInt& rhs) {
 // Binary subtraction operator (x - y)
 BigInt operator-(BigInt lhs, const BigInt& rhs) {
     BigInt result;
-    // TODO: Implement this operator
+    result = lhs;
+    result -= rhs;
     return result;
 }
 
@@ -354,7 +355,8 @@ BigInt operator/(BigInt lhs, const BigInt& rhs) {
 // Binary modulus operator (x % y)
 BigInt operator%(BigInt lhs, const BigInt& rhs) {
     BigInt result;
-    // TODO: Implement this operator
+    result = lhs;
+    result %= rhs;
     return result;
 }
 
@@ -394,20 +396,20 @@ bool operator<(const BigInt& lhs, const BigInt& rhs) {
 
 // Less-than-or-equal comparison operator (x <= y)
 bool operator<=(const BigInt& lhs, const BigInt& rhs) {
-    // TODO: Implement this operator
-    return false;
+    
+    return (lhs<rhs)||(lhs==rhs);
 }
 
 // Greater-than comparison operator (x > y)
 bool operator>(const BigInt& lhs, const BigInt& rhs) {
     // TODO: Implement this operator
-    return false;
+    return (rhs < lhs);
 }
 
 // Greater-than-or-equal comparison operator (x >= y)
 bool operator>=(const BigInt& lhs, const BigInt& rhs) {
     // TODO: Implement this operator
-    return false;
+    return !(lhs < rhs);
 }
 
 int main() {
