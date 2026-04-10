@@ -394,7 +394,6 @@ public:
 
 // Binary addition operator (x + y)
 BigInt operator+(BigInt lhs, const BigInt& rhs) {
-    BigInt result;
     // TODO: Implement this operator
     BigInt result;
     result = lhs;
