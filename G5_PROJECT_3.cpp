@@ -203,6 +203,45 @@ public:
     // Subtraction assignment operator (x -= y)
     BigInt& operator-=(const BigInt& other) {
         // TODO: Implement this operator
+        int cmp = compareMagnitude(other);
+            // case they are equal
+            if (cmp == 0) {
+            if (this->isNegative == other.isNegative) {
+                this->number = "0";
+                this->isNegative = false;
+            }
+            else{
+
+                this->number = addstrings(this->number, other.number);
+
+            }
+
+            }
+            else if (cmp == 1) {
+
+            if (this->isNegative == other.isNegative) {
+                this->number = subtractStrings(this->number,other.number);
+            }
+            else{
+
+                this->number = addstrings(this->number, other.number);
+
+            }
+            }
+            else {
+                if (this->isNegative == other.isNegative) {
+                    this->isNegative = !this->isNegative;                    
+                    this->number = subtractStrings(other.number,this->number);
+                }
+                else{
+                    this->number = addstrings(this->number, other.number);
+
+                }
+            }
+        
+        
+        
+        removeLeadingZeros();        
         return *this;
     }
 
@@ -316,6 +355,7 @@ public:
     // Pre-decrement operator (--x)
     BigInt& operator--() {
         // TODO: Implement this operator
+        *this-=BigInt(1);
         return *this;
     }
 
@@ -356,6 +396,9 @@ public:
 BigInt operator+(BigInt lhs, const BigInt& rhs) {
     BigInt result;
     // TODO: Implement this operator
+    BigInt result;
+    result = lhs;
+    result += rhs;
     return result;
 }
 
