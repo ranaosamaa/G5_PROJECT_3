@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
 using namespace std;
 
 class BigInt {
@@ -173,6 +173,25 @@ public:
     // Addition assignment operator (x += y)
     BigInt& operator+=(const BigInt& other) {
         // TODO: Implement this operator
+        if (this->isNegative == other.isNegative) {
+            this->number = addstrings(this->number, other.number);
+        }
+        else {
+            int cmp = compareMagnitude(other);
+
+            if (cmp == 0) {
+                this->number = "0";
+                this->isNegative = false;
+            }
+            else if (cmp == 1) {
+                this->number = subtractStrings(this->number, other.number);
+            }
+            else {
+                this->isNegative = other.isNegative;
+                this->number = subtractStrings(other.number, this->number);
+            }
+        }
+        removeLeadingZeros();
         return *this;
     }
 
@@ -252,6 +271,7 @@ public:
     // Pre-increment operator (++x)
     BigInt& operator++() {
         // TODO: Implement this operator
+        *this += BigInt(1);
         return *this;
     }
 
@@ -297,13 +317,7 @@ public:
     }
 
     // Friend declarations for comparison operators
-    friend bool operator==(const BigInt& lhs, const BigInt& rhs) {
-        if (lhs.number == rhs.number && lhs.number == "0")
-            return true;
-        if (lhs.isNegative != rhs.isNegative)
-            return false;
-        return lhs.number == rhs.number;
-    }
+    friend bool operator==(const BigInt& lhs, const BigInt& rhs);
     friend bool operator<(const BigInt& lhs, const BigInt& rhs);
 };
 
@@ -347,13 +361,17 @@ BigInt operator%(BigInt lhs, const BigInt& rhs) {
 // Equality comparison operator (x == y)
 bool operator==(const BigInt& lhs, const BigInt& rhs) {
     // TODO: Implement this operator
-    return false;
+    if (lhs.number == rhs.number && lhs.number == "0")
+        return true;
+    if (lhs.isNegative != rhs.isNegative)
+        return false;
+    return lhs.number == rhs.number;
 }
 
 // Inequality comparison operator (x != y)
 bool operator!=(const BigInt& lhs, const BigInt& rhs) {
     // TODO: Implement this operator
-    return false;
+    return !(lhs == rhs);
 }
 
 // Less-than comparison operator (x < y)
