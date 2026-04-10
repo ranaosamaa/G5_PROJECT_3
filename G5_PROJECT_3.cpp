@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include<algorithm>
 //#include <bits/stdc++.h>
 using namespace std;
 
@@ -112,9 +113,13 @@ public:
 
     // Constructor from 64-bit integer
     BigInt(int64_t value) {
-        if (value < 0)
+        if (value < 0) {
             isNegative = true;
-        number = abs(value);
+            value = -value;
+        }
+        else
+            isNegative = false;
+        number = to_string(value);
         // TODO: Implement this constructor
     }
 
@@ -122,7 +127,7 @@ public:
     BigInt(const string& str) {
         // TODO: Implement this constructor
         // chec if the string is starting with - 
-        if(str[0] == '-'){
+        if(!str.empty()&&str[0] == '-'){
             isNegative = true;
             number = str.substr(1);
         }
@@ -156,9 +161,9 @@ public:
 
     // Unary negation operator (-x)
     BigInt operator-() const {
-        BigInt result;
-        result.number = this->number;
-        result.isNegative = !(this->isNegative);
+        BigInt result(*this);
+        if (result.number != "0")
+            result.isNegative = !(isNegative);
         return result;
     }
 
@@ -204,14 +209,14 @@ public:
     // Multiplication assignment operator (x *= y)
     BigInt& operator*=(const BigInt& other) {
         string result = "0";
-        for (int i = number.size() - 1; i >= 0; i--) {
+        for (int i = (int)number.size() - 1; i >= 0; i--) {
             int carry = 0;
             string temp = "";
 
-            for (int k = 0; k < number.size() - 1; k++)
+            for (int k = 0; k < (int)number.size() - 1 - i; k++)
                 temp += '0';
 
-            for (int j = other.number.size() - 1; j >= 0; j--) {
+            for (int j = (int)other.number.size() - 1; j >= 0; j--) {
                 int mul = (number[i] - '0') * (other.number[j] - '0') + carry;
                 temp = char(mul % 10 + '0') + temp;
                 carry = mul / 10;
@@ -220,7 +225,7 @@ public:
             result = addstrings(result, temp);
         }
         number = result;
-        isNegative = (isNegative != other.isNegative);
+        isNegative = (number != "0") && (isNegative != other.isNegative);
         removeLeadingZeros();
         return *this;
     }
@@ -241,7 +246,7 @@ public:
 
         for (char digit:number) {
             // current=current*10 + digit
-            current.number+=digit;
+            current.number += digit;
             current.removeLeadingZeros();
             int count=0;
             while (current.compareMagnitude(divisor)>=0) {
@@ -303,8 +308,8 @@ public:
 
     // Post-increment operator (x++)
     BigInt operator++(int) {
-        BigInt temp;
-        *this += BigInt(1);
+        BigInt temp=*this;
+        ++(*this);
         return temp;
     }
 
@@ -316,8 +321,8 @@ public:
 
     // Post-decrement operator (x--)
     BigInt operator--(int) {
-        BigInt temp;
-        *this -= BigInt(1);
+        BigInt temp=*this;
+        --(*this);
         return temp;
     }
 
@@ -389,12 +394,8 @@ BigInt operator%(BigInt lhs, const BigInt& rhs) {
 
 // Equality comparison operator (x == y)
 bool operator==(const BigInt& lhs, const BigInt& rhs) {
-    // TODO: Implement this operator
-    if (lhs.number == rhs.number && lhs.number == "0")
-        return true;
-    if (lhs.isNegative != rhs.isNegative)
-        return false;
-    return lhs.number == rhs.number;
+    if (lhs.number == "0" && rhs.number == "0") return true;
+    return lhs.number == rhs.number && lhs.isNegative==rhs.isNegative;
 }
 
 // Inequality comparison operator (x != y)
@@ -445,7 +446,7 @@ int main() {
     cout << "Your task is to implement ALL the functions above." << endl;
     cout << "The tests below will work once you implement them correctly." << endl << endl;
 
-    /*
+    
     // Test 1: Constructors and basic output
     cout << "1. Constructors and output:" << endl;
     BigInt a(12345);              // Should create BigInt from integer
@@ -501,7 +502,7 @@ int main() {
     cout << "Negative multiplication: " << BigInt(-5) * BigInt(3) << endl;  // Should be "-15"
     cout << "Negative division: " << BigInt(-10) / BigInt(3) << endl;       // Should be "-3"
     cout << "Negative modulus: " << BigInt(-10) % BigInt(3) << endl;        // Should be "-1"
-    */
+    
 
     return 0;
 }
