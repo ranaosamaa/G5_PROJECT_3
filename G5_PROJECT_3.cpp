@@ -374,7 +374,8 @@ BigInt operator*(BigInt lhs, const BigInt& rhs) {
 // Binary division operator (x / y)
 BigInt operator/(BigInt lhs, const BigInt& rhs) {
     BigInt result;
-    // TODO: Implement this operator
+     result = lhs;
+    result /= rhs;
     return result;
 }
 
